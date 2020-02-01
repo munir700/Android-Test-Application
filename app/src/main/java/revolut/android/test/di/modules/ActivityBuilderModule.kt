@@ -7,5 +7,5 @@ import revolut.android.test.MainActivity
 @Module
 abstract class ActivityBuilderModule {
     @ContributesAndroidInjector()
-    abstract fun vehicleActivity(): MainActivity
+    abstract fun mainActivity(): MainActivity
 }
