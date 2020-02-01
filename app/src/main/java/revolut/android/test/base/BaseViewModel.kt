@@ -1,4 +1,7 @@
 package revolut.android.test.base
 
-class BaseViewModel {
+open class BaseViewModel : ObservableViewModel() {
+    override fun onCleared() {
+        super.onCleared()
+    }
 }

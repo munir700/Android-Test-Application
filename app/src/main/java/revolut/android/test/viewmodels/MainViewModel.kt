@@ -1,4 +1,9 @@
 package revolut.android.test.viewmodels
 
-class MainViewModel {
+import revolut.android.test.base.BaseViewModel
+import javax.inject.Inject
+
+class MainViewModel: BaseViewModel {
+    @Inject
+    constructor():super()
 }

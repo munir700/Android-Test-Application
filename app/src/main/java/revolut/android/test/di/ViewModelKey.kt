@@ -1,4 +1,4 @@
-package revolut.android.test.di.modules
+package revolut.android.test.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

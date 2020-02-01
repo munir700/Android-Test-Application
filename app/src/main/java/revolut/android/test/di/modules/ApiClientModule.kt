@@ -1,4 +1,4 @@
-package revolut.android.test.di
+package revolut.android.test.di.modules
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import revolut.android.test.Utils.ApiUtils
+import revolut.android.test.utils.ApiUtils
 import revolut.android.test.api.ApiHttpClient
 import revolut.android.test.api.ApiService
 import java.util.*

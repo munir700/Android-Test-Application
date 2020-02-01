@@ -6,11 +6,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import revolut.android.test.di.ViewModelFactory
-import revolut.android.test.di.modules.ViewModelKey
+import revolut.android.test.di.ViewModelKey
 import revolut.android.test.viewmodels.MainViewModel
 
 @Module
-abstract class ViewBindModule {
+abstract class ViewBinderModule {
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 

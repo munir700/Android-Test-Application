@@ -1,4 +1,4 @@
-package revolut.android.test.di
+package revolut.android.test.di.modules
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
