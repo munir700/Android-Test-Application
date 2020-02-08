@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import revolut.android.test.utils.ApiUtils
 import revolut.android.test.api.ApiHttpClient
 import revolut.android.test.api.ApiService
+import revolut.android.test.api.converter.ApiConverterFactory
 import java.util.*
 import javax.inject.Singleton
 
@@ -20,6 +21,7 @@ class ApiClientModule {
 
         val apiClient = Retrofit.Builder()
             .baseUrl(ApiUtils.API_BASE_URL)
+            .addConverterFactory(ApiConverterFactory())
             .addConverterFactory(GsonConverterFactory.create(GsonApi()))
             .client(ApiHttpClient().getHTTPClient(HashMap<String, String>()))
             .build()

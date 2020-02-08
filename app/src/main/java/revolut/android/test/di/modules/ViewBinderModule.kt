@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import revolut.android.test.di.ViewModelFactory
 import revolut.android.test.di.ViewModelKey
-import revolut.android.test.viewmodels.MainViewModel
+import revolut.android.test.viewmodels.CurrencyViewModel
 
 @Module
 abstract class ViewBinderModule {
@@ -16,6 +16,6 @@ abstract class ViewBinderModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindMovieViewModel(mainViewModel: MainViewModel): ViewModel
+    @ViewModelKey(CurrencyViewModel::class)
+    abstract fun bindMainViewModel(currencyViewModel: CurrencyViewModel): ViewModel
 }

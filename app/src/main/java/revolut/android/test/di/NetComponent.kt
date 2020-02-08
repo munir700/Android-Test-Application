@@ -8,13 +8,14 @@ import dagger.android.support.AndroidSupportInjectionModule
 import revolut.android.test.TestApp
 import revolut.android.test.di.modules.ActivityBuilderModule
 import revolut.android.test.di.modules.ApiClientModule
+import revolut.android.test.di.modules.AppModule
 import revolut.android.test.di.modules.ViewBinderModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [(ViewBinderModule::class), (ActivityBuilderModule::class), (AndroidInjectionModule::class),
-        AndroidSupportInjectionModule::class, (ApiClientModule::class)]
+        AndroidSupportInjectionModule::class, (ApiClientModule::class), AppModule::class]
 )
 interface NetComponent {
 
