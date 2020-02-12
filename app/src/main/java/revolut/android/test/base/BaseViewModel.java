@@ -23,6 +23,11 @@ public class BaseViewModel extends ObservableViewModel {
     @Inject
     protected AppManager appManager;
 
+
+    public CompositeDisposable getCompositeDisposable() {
+        return disposables;
+    }
+
     private ArrayList<ViewModelCallBackObserver> callBacksObservers = new ArrayList<>();
 
     public void addObserver(ViewModelCallBackObserver callBackObserver) {

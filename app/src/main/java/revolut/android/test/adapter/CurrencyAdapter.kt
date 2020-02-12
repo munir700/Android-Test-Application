@@ -4,14 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import revolut.android.test.R
 import revolut.android.test.databinding.CurrencyRowBinding
 import revolut.android.test.interfaces.CurrenciesEventsListener
 import revolut.android.test.models.Rate
 
-class CurrencyAdapter(val context: Context, var rateList: List<Rate>,  val currenciesEventsListener: CurrenciesEventsListener) :
-    RecyclerView.Adapter<CurrencyRowViewHolder>() {
+
+class CurrencyAdapter(
+    val context: Context,
+    val currenciesEventsListener: CurrenciesEventsListener
+) :
+    ListAdapter<Rate, CurrencyRowViewHolder>(CurrencyRowItemDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyRowViewHolder {
         val binding: CurrencyRowBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
@@ -21,19 +25,10 @@ class CurrencyAdapter(val context: Context, var rateList: List<Rate>,  val curre
         return CurrencyRowViewHolder(binding)
     }
 
-    fun setData(rateList: List<Rate>){
-        this.rateList = rateList
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return rateList.size
-    }
 
     override fun onBindViewHolder(holder: CurrencyRowViewHolder, position: Int) {
-        val rate: Rate = rateList.get(position)
+        val rate: Rate = getItem(position)
         holder.bind(rate, currenciesEventsListener)
     }
-
 
 }

@@ -3,6 +3,7 @@ package revolut.android.test.adapter
 import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import revolut.android.test.databinding.CurrencyRowBinding
 import revolut.android.test.interfaces.CurrenciesEventsListener
@@ -24,9 +25,9 @@ class CurrencyRowViewHolder(val rowCurrencyBinding: CurrencyRowBinding) :
             textWatcher?.let { removeTextChangedListener(textWatcher) }
             if (rate.hasFocus) {
                 inputType = InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
-                /*textWatcher = doAfterTextChanged { text ->
+                textWatcher = doAfterTextChanged { text ->
                     text?.let { currenciesEventsListener.onAmountChanged(it) }
-                }*/
+                }
             } else {
                 keyListener = null
                 inputType = InputType.TYPE_NULL

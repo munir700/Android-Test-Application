@@ -2,6 +2,7 @@ package revolut.android.test.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
+import revolut.android.test.api.ApiService
 import revolut.android.test.base.BaseViewModel
 import revolut.android.test.models.CurrencyRate
 import revolut.android.test.models.Rate
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 class CurrencyViewModel @Inject constructor() : BaseViewModel() {
 
+    var rateList : List<Rate> = ArrayList()
 
     var apiCurrencyRateCall: Call<CurrencyRate>? = null
 
@@ -24,10 +26,7 @@ class CurrencyViewModel @Inject constructor() : BaseViewModel() {
         return currencyRepository.getCurrenyData(this, apiCurrencyRateCall)
     }
 
-    fun getRateList(
-        currencyRate: CurrencyRate,
-        currentInputValue: Double
-    ): List<Rate> {
+    fun getRateList(currencyRate: CurrencyRate, currentInputValue : Double ): List<Rate> {
         val newRates = mutableListOf<Rate>()
         newRates.add(createRateObject(currencyRate.base, 1.0, currentInputValue, true))
         currencyRate.rates.map { item ->

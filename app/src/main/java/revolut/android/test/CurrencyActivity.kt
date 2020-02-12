@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import revolut.android.test.adapter.CurrencyAdapter
+import revolut.android.test.api.ApiService
 import revolut.android.test.base.BaseActivity
 import revolut.android.test.databinding.ActivityCurrencyBinding
 import revolut.android.test.interfaces.CurrenciesEventsListener
 import revolut.android.test.models.Rate
+import revolut.android.test.models.calculateRate
 import revolut.android.test.viewmodels.CurrencyViewModel
+import java.util.concurrent.TimeUnit
 
 class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding>(),
     CurrenciesEventsListener {
+
+    private var currencyValue = ApiService.currentInputValue
 
     lateinit var currencyAdapter: CurrencyAdapter
 
@@ -27,7 +34,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initUI()
-        loadCurrency(1.0)
+        callApiTimer()
     }
 
     private fun initUI() {
@@ -35,8 +42,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
             (binding.recyclerResults.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations =
                 false
             currencyAdapter = CurrencyAdapter(
-                this@CurrencyActivity,
-                ArrayList(), this
+                this@CurrencyActivity, this
             )
             binding.recyclerResults.setAdapter(currencyAdapter)
 
@@ -48,19 +54,59 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
         }
     }
 
+    private fun callApiTimer() {
+        val disposable = Observable.interval(2, 1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { loadCurrency() }
 
-    private fun loadCurrency(currentInputValue: Double) {
+        viewModel.compositeDisposable.add(disposable)
+
+    }
+
+    private fun loadCurrency() {
         viewModel.getCurrencyRates().observe(this, Observer {
-            var rateList = viewModel.getRateList(it, currentInputValue)
-            currencyAdapter.setData(rateList)
+            Log.e("getCurrencyRates()", "currencyValue $currencyValue")
+            viewModel.rateList = viewModel.getRateList(it, currencyValue)
+            currencyAdapter.submitList(viewModel.rateList)
 
         })
     }
 
     override fun onAmountChanged(amount: CharSequence) {
+        Log.e("onAmountChanged", "amount $amount")
+        if (amount.isNotEmpty()) {
+            currencyValue = amount.toString().toDouble()
+        }
+        Log.e("onAmountChanged", "currencyValue $currencyValue")
     }
 
-    override fun onRowClicked(row: Rate) {
+    override fun onRowClicked(rate: Rate) {
+        Log.e(
+            "onRowClicked_1",
+            "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
+        )
+        ApiService.currencyName = rate.name
+        ApiService.currentInputValue = rate.currency
+        currencyValue = rate.currency
+        updateList(rate.currency)
+        Log.e(
+            "onRowClicked_1",
+            "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
+        )
+    }
+    private fun updateList(inputValue: Double) {
+        val list = currencyAdapter.currentList
+
+        val newList = list.map {
+            val c = if (inputValue > 0)
+                it.value.calculateRate(inputValue)
+            else
+                0.0
+
+            it.copy(currency = c)
+        }
+
+        currencyAdapter.submitList(newList)
     }
 
 }

@@ -35,7 +35,7 @@ public class CurrencyRepository {
             if (currencyCall != null) {
                 currencyCall.cancel();
             }
-            currencyCall = apiService.getCurrenyData("EUR");
+            currencyCall = apiService.getCurrenyData(ApiService.Companion.getCurrencyName());
             currencyCall.enqueue(new BaseNetworkCallBack<CurrencyRate>(viewModel) {
                 @Override
                 public void onResponse(Call<CurrencyRate> call, Response<CurrencyRate> response) {

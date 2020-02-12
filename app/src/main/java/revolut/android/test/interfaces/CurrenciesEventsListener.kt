@@ -4,5 +4,5 @@ import revolut.android.test.models.Rate
 
 interface CurrenciesEventsListener {
     fun onAmountChanged(amount: CharSequence)
-    fun onRowClicked(row: Rate)
+    fun onRowClicked(rate: Rate)
 }

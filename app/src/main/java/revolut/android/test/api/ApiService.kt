@@ -7,6 +7,11 @@ import revolut.android.test.models.CurrencyRate
 
 interface ApiService {
 
+    companion object{
+        var currencyName : String = "EUR"
+        var currentInputValue : Double = 1.0
+    }
+
     @GET("latest?")
     fun getCurrenyData(@Query("base") base : String ): Call<CurrencyRate>
 
