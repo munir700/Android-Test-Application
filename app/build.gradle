@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
 
         buildConfigField "Boolean", "API_LOGGING", "true"
         buildConfigField "String", "API_BASE_URL", "\"https://revolut.duckdns.org/\""
@@ -41,12 +42,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'androidx.cardview:cardview:1.0.0'
     // Dagger 2
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
@@ -79,5 +82,9 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$arch_version"
     annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
+
+    //SDP
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
 }

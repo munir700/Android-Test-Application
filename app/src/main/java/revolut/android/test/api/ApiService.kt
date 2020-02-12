@@ -1,13 +1,13 @@
 package revolut.android.test.api
 
-import io.reactivex.Single
-import retrofit2.Response
+import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 import revolut.android.test.models.CurrencyRate
 
 interface ApiService {
 
-    @GET("")
-    fun getCurrenyData(): Single<Response<CurrencyRate>>
+    @GET("latest?")
+    fun getCurrenyData(@Query("base") base : String ): Call<CurrencyRate>
 
 }

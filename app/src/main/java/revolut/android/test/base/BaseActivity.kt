@@ -14,21 +14,23 @@ import javax.inject.Inject
 
 abstract class BaseActivity< VM : BaseViewModel, DB : ViewDataBinding> : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     lateinit var binding: DB
     lateinit var viewModel: VM
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     abstract fun getViewModel(): Class<VM>
 
     @LayoutRes
     abstract fun getLayoutRes(): Int
 
+
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         /** View Model Provider Generic handling, Child will have to override getViewModel. */
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModel())
+        //viewModel.addObserver(this)
         super.onCreate(savedInstanceState)
         /** To generically handle Data binding */
         binding = DataBindingUtil.setContentView(this, getLayoutRes())
