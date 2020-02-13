@@ -55,6 +55,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
             ViewModelEventsEnum.ON_API_CALL_STOP -> {
                 Log.e("ON_API_CALL_STOP", "stop")
                 binding.skeleton?.visibility = View.GONE
+                binding.recyclerResults.visibility = View.VISIBLE
             }
             else -> {
                 binding.skeleton?.visibility = View.GONE

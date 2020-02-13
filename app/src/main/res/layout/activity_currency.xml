@@ -13,34 +13,35 @@
         tools:context=".views.CurrencyActivity">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center_horizontal"
+            android:text="@string/rates"
+            android:textColor="@color/light_green_color"
+            android:textSize="@dimen/_15ssp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_results"
+            android:id="@+id/recyclerResults"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/background_color"
             android:orientation="vertical"
-            android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <include
             android:id="@+id/skeleton"
             layout="@layout/currencies_skeleton"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_height="match_parent"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

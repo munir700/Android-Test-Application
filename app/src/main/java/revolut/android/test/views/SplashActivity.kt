@@ -1,4 +1,4 @@
-package com.beyazidyargici.revolutcurrency.ui
+package  revolut.android.test.views
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
