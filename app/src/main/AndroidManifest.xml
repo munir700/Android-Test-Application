@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CurrencyActivity">
+        <activity android:name=".views.CurrencyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

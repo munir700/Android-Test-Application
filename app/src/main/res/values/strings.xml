@@ -9,4 +9,5 @@
     <string name="STR_NO_RESULT">We didn\'t find anything matching. Try again.</string>
     <string name="STR_NO_RESULTS">NO RESULTS FOUND!</string>
     <string name="STR_SERVER_ERROR_TITLE">SERVER ERROR!</string>
+
 </resources>

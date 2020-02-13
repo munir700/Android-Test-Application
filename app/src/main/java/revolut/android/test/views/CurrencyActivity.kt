@@ -1,20 +1,23 @@
-package revolut.android.test
+package revolut.android.test.views
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import revolut.android.test.R
 import revolut.android.test.adapter.CurrencyAdapter
 import revolut.android.test.api.ApiService
 import revolut.android.test.base.BaseActivity
 import revolut.android.test.databinding.ActivityCurrencyBinding
+import revolut.android.test.enums.ViewModelEventsEnum
 import revolut.android.test.interfaces.CurrenciesEventsListener
 import revolut.android.test.models.Rate
-import revolut.android.test.models.calculateRate
 import revolut.android.test.viewmodels.CurrencyViewModel
 import java.util.concurrent.TimeUnit
+
 
 class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding>(),
     CurrenciesEventsListener {
@@ -23,12 +26,41 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
 
     lateinit var currencyAdapter: CurrencyAdapter
 
+
     override fun getViewModel(): Class<CurrencyViewModel> {
         return CurrencyViewModel::class.java
     }
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_currency
+    }
+
+    override fun onObserve(event: ViewModelEventsEnum, eventMessage: String?) {
+        super.onObserve(event, eventMessage)
+        when (event) {
+            ViewModelEventsEnum.NO_INTERNET_CONNECTION -> {
+                Log.e("NO_INTERNET_CONNECTION", "no internet")
+                onApiRequestFailed(eventMessage)
+            }
+            ViewModelEventsEnum.ON_API_REQUEST_FAILURE -> {
+                Log.e("NO_INTERNET_CONNECTION", "no internet")
+                onApiRequestFailed(eventMessage)
+            }
+            ViewModelEventsEnum.ON_API_CALL_START -> {
+                Log.e("ON_API_CALL_START", "start")
+                if (viewModel.rateList.isEmpty()) {
+                    binding.skeleton?.visibility = View.VISIBLE
+                }
+            }
+            ViewModelEventsEnum.ON_API_CALL_STOP -> {
+                Log.e("ON_API_CALL_STOP", "stop")
+                binding.skeleton?.visibility = View.GONE
+            }
+            else -> {
+                binding.skeleton?.visibility = View.GONE
+                Log.e("ON_API_CALL_STOP", "stop")
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +107,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
     override fun onAmountChanged(amount: CharSequence) {
         Log.e("onAmountChanged", "amount $amount")
         if (amount.isNotEmpty()) {
-            currencyValue = amount.toString().toDouble()
+            currencyValue = amount.toString().replace(",","") .toDouble()
         }
         Log.e("onAmountChanged", "currencyValue $currencyValue")
     }
@@ -87,26 +119,11 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
         )
         ApiService.currencyName = rate.name
         ApiService.currentInputValue = rate.currency
-        currencyValue = rate.currency
-        updateList(rate.currency)
         Log.e(
-            "onRowClicked_1",
+            "onRowClicked_2",
             "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
         )
     }
-    private fun updateList(inputValue: Double) {
-        val list = currencyAdapter.currentList
 
-        val newList = list.map {
-            val c = if (inputValue > 0)
-                it.value.calculateRate(inputValue)
-            else
-                0.0
-
-            it.copy(currency = c)
-        }
-
-        currencyAdapter.submitList(newList)
-    }
 
 }

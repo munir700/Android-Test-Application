@@ -1,5 +1,7 @@
 package revolut.android.test.base;
 
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +28,7 @@ public class BaseNetworkCallBack<T> implements Callback<T> {
     }
 
     @Override
-    public void onResponse(Call<T> call, Response<T> response) {
+    public void onResponse(@NotNull Call<T> call, @NotNull Response<T> response) {
         notifyObserver(ViewModelEventsEnum.ON_API_CALL_STOP, null);
     }
 

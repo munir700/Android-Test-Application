@@ -19,7 +19,7 @@ class CurrencyRowViewHolder(val rowCurrencyBinding: CurrencyRowBinding) :
     fun bind(rate: Rate, currenciesEventsListener: CurrenciesEventsListener) {
         rowCurrencyBinding.rate = rate
         currentInput = rate.currency
-        setCurrency(rate.value, rowCurrencyBinding.currencyValueTextField)
+        setCurrency(rate.currency, rowCurrencyBinding.currencyValueTextField)
 
         rowCurrencyBinding.currencyValueTextField.run {
             textWatcher?.let { removeTextChangedListener(textWatcher) }

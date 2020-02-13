@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CurrencyActivity">
+        tools:context=".views.CurrencyActivity">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,5 +30,17 @@
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+        <include
+            android:id="@+id/skeleton"
+            layout="@layout/currencies_skeleton"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

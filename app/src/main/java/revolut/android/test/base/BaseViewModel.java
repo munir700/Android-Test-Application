@@ -18,7 +18,7 @@ import revolut.android.test.managers.AppManager;
 
 public class BaseViewModel extends ObservableViewModel {
 
-    CompositeDisposable disposables = new CompositeDisposable();
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
     protected AppManager appManager;
@@ -52,6 +52,7 @@ public class BaseViewModel extends ObservableViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
+        disposables.dispose();
         removeCallBacks();
     }
 

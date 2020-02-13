@@ -10,9 +10,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.AndroidInjection
+import revolut.android.test.enums.ViewModelEventsEnum
+import revolut.android.test.interfaces.ViewModelCallBackObserver
+import revolut.android.test.utils.showToast
 import javax.inject.Inject
 
-abstract class BaseActivity< VM : BaseViewModel, DB : ViewDataBinding> : AppCompatActivity() {
+abstract class BaseActivity< VM : BaseViewModel, DB : ViewDataBinding> : AppCompatActivity(),
+    ViewModelCallBackObserver<String> {
 
     lateinit var binding: DB
     lateinit var viewModel: VM
@@ -25,12 +29,15 @@ abstract class BaseActivity< VM : BaseViewModel, DB : ViewDataBinding> : AppComp
     @LayoutRes
     abstract fun getLayoutRes(): Int
 
+    override fun onObserve(event: ViewModelEventsEnum, eventMessage: String?) {
+
+    }
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         /** View Model Provider Generic handling, Child will have to override getViewModel. */
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModel())
-        //viewModel.addObserver(this)
+        viewModel.addObserver(this)
         super.onCreate(savedInstanceState)
         /** To generically handle Data binding */
         binding = DataBindingUtil.setContentView(this, getLayoutRes())
@@ -38,6 +45,12 @@ abstract class BaseActivity< VM : BaseViewModel, DB : ViewDataBinding> : AppComp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
+    /**
+     * on Server Request Failed.
+     */
+    open fun onApiRequestFailed(message: String?) {
 
+        showToast(message)
+    }
 
 }
