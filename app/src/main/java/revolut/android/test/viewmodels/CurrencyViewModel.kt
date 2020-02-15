@@ -3,13 +3,12 @@ package revolut.android.test.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
-import revolut.android.test.api.ApiService
 import revolut.android.test.base.BaseViewModel
 import revolut.android.test.models.CurrencyRate
 import revolut.android.test.models.Rate
 import revolut.android.test.models.calculateRate
 import revolut.android.test.repository.CurrencyRepository
-import revolut.android.test.utils.Currency
+import revolut.android.test.enums.Currency
 import javax.inject.Inject
 
 

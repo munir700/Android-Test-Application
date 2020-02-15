@@ -13,4 +13,8 @@ object Mask {
     fun formatCurrency(price: Double): String {
         return getCurrencyInstance().format(price)
     }
+
+    fun removeCurrencyFormat(amount: CharSequence): Double {
+        return amount.toString().replace(",", "").toDouble()
+    }
 }

@@ -15,6 +15,8 @@ import revolut.android.test.databinding.ActivityCurrencyBinding
 import revolut.android.test.enums.ViewModelEventsEnum
 import revolut.android.test.interfaces.CurrenciesEventsListener
 import revolut.android.test.models.Rate
+import revolut.android.test.utils.Logger
+import revolut.android.test.utils.numberformat.Mask
 import revolut.android.test.viewmodels.CurrencyViewModel
 import java.util.concurrent.TimeUnit
 
@@ -39,27 +41,29 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
         super.onObserve(event, eventMessage)
         when (event) {
             ViewModelEventsEnum.NO_INTERNET_CONNECTION -> {
-                Log.e("NO_INTERNET_CONNECTION", "no internet")
+                Logger("NO_INTERNET_CONNECTION", "no internet")
                 onApiRequestFailed(eventMessage)
+                binding.skeleton?.visibility = View.GONE
             }
             ViewModelEventsEnum.ON_API_REQUEST_FAILURE -> {
-                Log.e("NO_INTERNET_CONNECTION", "no internet")
+                Logger("ON_API_REQUEST_FAILURE", "Api failure $eventMessage")
                 onApiRequestFailed(eventMessage)
+                binding.skeleton?.visibility = View.GONE
             }
             ViewModelEventsEnum.ON_API_CALL_START -> {
-                Log.e("ON_API_CALL_START", "start")
+                Logger("ON_API_CALL_START", "start")
                 if (viewModel.rateList.isEmpty()) {
                     binding.skeleton?.visibility = View.VISIBLE
                 }
             }
             ViewModelEventsEnum.ON_API_CALL_STOP -> {
-                Log.e("ON_API_CALL_STOP", "stop")
+                Logger("ON_API_CALL_STOP", "stop")
                 binding.skeleton?.visibility = View.GONE
                 binding.recyclerResults.visibility = View.VISIBLE
             }
             else -> {
                 binding.skeleton?.visibility = View.GONE
-                Log.e("ON_API_CALL_STOP", "stop")
+                Logger("ON_API_CALL_STOP", "stop")
             }
         }
     }
@@ -80,7 +84,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
             binding.recyclerResults.setAdapter(currencyAdapter)
 
         } catch (e: Exception) {
-            Log.e(
+            Logger(
                 "Exception",
                 "Error while initialize UI components and message =" + e.message
             )
@@ -88,7 +92,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
     }
 
     private fun callApiTimer() {
-        val disposable = Observable.interval(2, 1, TimeUnit.SECONDS)
+        val disposable = Observable.interval(0, 1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { loadCurrency() }
 
@@ -98,7 +102,7 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
 
     private fun loadCurrency() {
         viewModel.getCurrencyRates().observe(this, Observer {
-            Log.e("getCurrencyRates()", "currencyValue $currencyValue")
+            Logger("getCurrencyRates()", "currencyValue $currencyValue")
             viewModel.rateList = viewModel.getRateList(it, currencyValue)
             currencyAdapter.submitList(viewModel.rateList)
 
@@ -106,21 +110,21 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
     }
 
     override fun onAmountChanged(amount: CharSequence) {
-        Log.e("onAmountChanged", "amount $amount")
+        Logger("onAmountChanged_1", "amount $amount")
         if (amount.isNotEmpty()) {
-            currencyValue = amount.toString().replace(",","") .toDouble()
+            currencyValue = Mask.removeCurrencyFormat(amount)
         }
-        Log.e("onAmountChanged", "currencyValue $currencyValue")
+        Logger("onAmountChanged_2", "currencyValue $currencyValue")
     }
 
     override fun onRowClicked(rate: Rate) {
-        Log.e(
+        Logger(
             "onRowClicked_1",
             "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
         )
         ApiService.currencyName = rate.name
         ApiService.currentInputValue = rate.currency
-        Log.e(
+        Logger(
             "onRowClicked_2",
             "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
         )

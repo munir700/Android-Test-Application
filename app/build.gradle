@@ -17,6 +17,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
+        buildConfigField "Boolean", "DEBUGABLE", "true"
+
         buildConfigField "Boolean", "API_LOGGING", "true"
         buildConfigField "String", "API_BASE_URL", "\"https://revolut.duckdns.org/\""
     }

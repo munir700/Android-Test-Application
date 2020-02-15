@@ -1,4 +1,4 @@
-package revolut.android.test.utils
+package revolut.android.test.enums
 
 import androidx.annotation.DrawableRes
 import revolut.android.test.R
