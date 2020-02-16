@@ -9,6 +9,7 @@ import revolut.android.test.models.Rate
 import revolut.android.test.models.calculateRate
 import revolut.android.test.repository.CurrencyRepository
 import revolut.android.test.enums.Currency
+import revolut.android.test.utils.Logger
 import javax.inject.Inject
 
 
@@ -27,7 +28,8 @@ class CurrencyViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun getRateList(currencyRate: CurrencyRate, currentInputValue : Double ): List<Rate> {
-        Log.e("currentInputValue","value $currentInputValue")
+        Logger(
+            "currentInputValue","value $currentInputValue")
         val newRates = mutableListOf<Rate>()
         newRates.add(createRateObject(currencyRate.base, 1.0, currentInputValue, true))
         currencyRate.rates.map { item ->

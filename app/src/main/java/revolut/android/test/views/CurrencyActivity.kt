@@ -1,7 +1,6 @@
 package revolut.android.test.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -24,6 +23,7 @@ import java.util.concurrent.TimeUnit
 class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding>(),
     CurrenciesEventsListener {
 
+    private var scrollRecyclerviewTop: Boolean = false
     private var currencyValue = ApiService.currentInputValue
 
     lateinit var currencyAdapter: CurrencyAdapter
@@ -102,32 +102,39 @@ class CurrencyActivity : BaseActivity<CurrencyViewModel, ActivityCurrencyBinding
 
     private fun loadCurrency() {
         viewModel.getCurrencyRates().observe(this, Observer {
-            Logger("getCurrencyRates()", "currencyValue $currencyValue")
+            //Logger("loadCurrency()", "currencyValue $currencyValue")
             viewModel.rateList = viewModel.getRateList(it, currencyValue)
             currencyAdapter.submitList(viewModel.rateList)
+            if (scrollRecyclerviewTop && it.base.equals(ApiService.currencyName)) {
+                //Logger("loadCurrency()", "smoothScrollToPosition to 0")
+                scrollRecyclerviewTop = false;
+                binding.recyclerResults.post({ binding.recyclerResults.smoothScrollToPosition(0) })
+            }
 
+            //Logger("loadCurrency()", "item count ${currencyAdapter.itemCount}")
         })
     }
 
     override fun onAmountChanged(amount: CharSequence) {
-        Logger("onAmountChanged_1", "amount $amount")
+        //Logger("onAmountChanged_1", "amount $amount")
         if (amount.isNotEmpty()) {
             currencyValue = Mask.removeCurrencyFormat(amount)
         }
-        Logger("onAmountChanged_2", "currencyValue $currencyValue")
+        //Logger("onAmountChanged_2", "currencyValue $currencyValue")
     }
 
     override fun onRowClicked(rate: Rate) {
-        Logger(
+        /*Logger(
             "onRowClicked_1",
             "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
-        )
+        )*/
         ApiService.currencyName = rate.name
         ApiService.currentInputValue = rate.currency
-        Logger(
+        scrollRecyclerviewTop = true
+       /* Logger(
             "onRowClicked_2",
             "name " + ApiService.currencyName + " currentInputValue " + ApiService.currentInputValue
-        )
+        )*/
     }
 
 
