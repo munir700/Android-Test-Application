@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        buildConfigField "Boolean", "DEBUGABLE", "true"
+        buildConfigField "Boolean", "DEBUGABLE", "false"
 
         buildConfigField "Boolean", "API_LOGGING", "true"
         buildConfigField "String", "API_BASE_URL", "\"https://revolut.duckdns.org/\""
@@ -46,6 +46,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
   
 }
 
@@ -58,6 +64,9 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+
+    testImplementation 'org.robolectric:robolectric:4.3'
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_loggin_version"
 
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"

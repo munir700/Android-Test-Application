@@ -2,9 +2,6 @@ package revolut.android.test.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;
